@@ -1,5 +1,6 @@
 package com.example.ServiceBooking.entity;
 
+import com.example.ServiceBooking.dto.UserDto;
 import com.example.ServiceBooking.enums.UserRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -29,4 +30,15 @@ public class User {
     private String phoneNumber;
 
     private UserRole role;
+
+    public UserDto getDTO() {
+        UserDto userDto = new UserDto() ;
+        userDto.setId(id);
+        userDto.setName(name);
+        userDto.setEmail(email);
+        userDto.setLastName(lastName);
+        userDto.setRole(role);
+
+        return userDto ;
+    }
 }
