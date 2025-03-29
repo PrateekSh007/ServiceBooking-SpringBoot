@@ -29,4 +29,15 @@ public class AuthServiceImpl implements AuthService{
     public Boolean presentByEmail(String email) {
         return userRepository.findFirstByEmail(email) != null;
     }
+
+    public UserDto signupCompany(SignupRequestDto signupRequestDto) {
+        User user = new User() ;
+        user.setName(signupRequestDto.getName());
+        user.setEmail(signupRequestDto.getEmail());
+        user.setPassword(signupRequestDto.getPassword());
+        user.setPhoneNumber(signupRequestDto.getPhoneNumber());
+
+        user.setRole(UserRole.COMPANY);
+        return userRepository.save(user).getDTO() ;
+    }
 }
