@@ -1,5 +1,7 @@
 package com.example.ServiceBooking.controller;
 
+import com.example.ServiceBooking.dto.CompanyUserDto;
+import com.example.ServiceBooking.dto.SignUpRequestCompanyDto;
 import com.example.ServiceBooking.dto.SignupRequestDto;
 import com.example.ServiceBooking.dto.UserDto;
 import com.example.ServiceBooking.services.authentication.AuthService;
@@ -29,12 +31,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/company/sign-up")
-    public ResponseEntity<?> signupCompany(@RequestBody SignupRequestDto signupRequestDto){
-        if(authService.presentByEmail(signupRequestDto.getEmail())){
+    public ResponseEntity<?> signupCompany(@RequestBody SignUpRequestCompanyDto signUpRequestCompanyDto){
+        if(authService.presentByEmail(signUpRequestCompanyDto.getEmail())){
             return new ResponseEntity<>("Company already exist" , HttpStatus.NOT_ACCEPTABLE) ;
         }
 
-        UserDto createdUser = authService.signupclient(signupRequestDto);
+        CompanyUserDto createdUser = authService.signupCompany(signUpRequestCompanyDto);
         return new ResponseEntity<>(createdUser, HttpStatus.OK) ;
     }
 }

@@ -1,9 +1,13 @@
 package com.example.ServiceBooking.services.authentication;
 
+import com.example.ServiceBooking.dto.CompanyUserDto;
+import com.example.ServiceBooking.dto.SignUpRequestCompanyDto;
 import com.example.ServiceBooking.dto.SignupRequestDto;
 import com.example.ServiceBooking.dto.UserDto;
+import com.example.ServiceBooking.entity.CompanyUser;
 import com.example.ServiceBooking.entity.User;
 import com.example.ServiceBooking.enums.UserRole;
+import com.example.ServiceBooking.repository.CompanyUserRepo;
 import com.example.ServiceBooking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,9 @@ public class AuthServiceImpl implements AuthService{
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CompanyUserRepo companyUserRepo;
 
     public UserDto signupclient(SignupRequestDto signupRequestDto) {
         User user = new User() ;
@@ -30,14 +37,21 @@ public class AuthServiceImpl implements AuthService{
         return userRepository.findFirstByEmail(email) != null;
     }
 
-    public UserDto signupCompany(SignupRequestDto signupRequestDto) {
-        User user = new User() ;
-        user.setName(signupRequestDto.getName());
-        user.setEmail(signupRequestDto.getEmail());
-        user.setPassword(signupRequestDto.getPassword());
-        user.setPhoneNumber(signupRequestDto.getPhoneNumber());
+    private Boolean presentByEmailCompany(String email) {
+        return companyUserRepo.findFirstByEmail(email) != null ;
+    }
 
-        user.setRole(UserRole.COMPANY);
-        return userRepository.save(user).getDTO() ;
+
+    public CompanyUserDto signupCompany(SignUpRequestCompanyDto signUpRequestCompanyDto) {
+        CompanyUser companyUser = new CompanyUser() ;
+
+        companyUser.setName(signUpRequestCompanyDto.getName());
+        companyUser.setAddress(signUpRequestCompanyDto.getAddress());
+        companyUser.setEmail(signUpRequestCompanyDto.getEmail());
+        companyUser.setPassword(signUpRequestCompanyDto.getPassword());
+        companyUser.setPhoneNumber(signUpRequestCompanyDto.getPhoneNumber());
+
+        companyUser.setRole(UserRole.COMPANY);
+        return companyUserRepo.save(companyUser).getcompanyDTO();
     }
 }
