@@ -10,6 +10,7 @@ import com.example.ServiceBooking.enums.UserRole;
 import com.example.ServiceBooking.repository.CompanyUserRepo;
 import com.example.ServiceBooking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,7 +26,7 @@ public class AuthServiceImpl implements AuthService{
         User user = new User() ;
         user.setName(signupRequestDto.getName());
         user.setEmail(signupRequestDto.getEmail());
-        user.setPassword(signupRequestDto.getPassword());
+        user.setPassword(new BCryptPasswordEncoder().encode(signupRequestDto.getPassword()));
         user.setLastName(signupRequestDto.getLastName());
         user.setPhoneNumber(signupRequestDto.getPhoneNumber());
 
@@ -48,7 +49,7 @@ public class AuthServiceImpl implements AuthService{
         companyUser.setName(signUpRequestCompanyDto.getName());
         companyUser.setAddress(signUpRequestCompanyDto.getAddress());
         companyUser.setEmail(signUpRequestCompanyDto.getEmail());
-        companyUser.setPassword(signUpRequestCompanyDto.getPassword());
+        companyUser.setPassword((new BCryptPasswordEncoder().encode(signUpRequestCompanyDto.getPassword())));
         companyUser.setPhoneNumber(signUpRequestCompanyDto.getPhoneNumber());
 
         companyUser.setRole(UserRole.COMPANY);
